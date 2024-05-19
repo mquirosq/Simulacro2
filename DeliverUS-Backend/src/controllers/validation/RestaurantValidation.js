@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 import { checkFileIsImage, checkFileMaxSize } from './FileValidationHelper.js'
-const maxFileSize = 2000000 // around 2Mb
+const maxFileSize = 2000000 // around 2Mbd
 
 const create = [
   check('name').exists().isString().isLength({ min: 1, max: 255 }).trim(),

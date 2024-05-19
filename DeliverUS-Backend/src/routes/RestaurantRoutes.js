@@ -25,6 +25,14 @@ const loadFileRoutes = function (app) {
     .get(
       checkEntityExists(Restaurant, 'restaurantId'),
       RestaurantController.show)
+    .patch(
+      isLoggedIn,
+      hasRole('owner'),
+      checkEntityExists(Restaurant, 'restaurantId'),
+      RestaurantMiddleware.checkRestaurantOwnership,
+      RestaurantMiddleware.canToggleState,
+      RestaurantController.toggleState
+    )
     .put(
       isLoggedIn,
       hasRole('owner'),

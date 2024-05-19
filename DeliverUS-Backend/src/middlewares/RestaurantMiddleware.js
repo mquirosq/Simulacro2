@@ -25,4 +25,22 @@ const restaurantHasNoOrders = async (req, res, next) => {
   }
 }
 
-export { checkRestaurantOwnership, restaurantHasNoOrders }
+const canToggleState = async (req, res, next) => {
+  try {
+    const restaurant = await Restaurant.findByPk(req.params.restaurantId)
+    if (restaurant.status === 'online' || restaurant.status === 'offline') {
+      const orders = await Order.findAll({ where: { restaurantId: req.params.restaurantId, deliveredAt: null } })
+      if (orders.length > 0) {
+        return res.status(409).send('Restaurant has peding orders')
+      } else {
+        return next()
+      }
+    } else {
+      return res.status(409).send('Restaurant status must be offline or online')
+    }
+  } catch (err) {
+    return res.status(500).send(err.message)
+  }
+}
+
+export { checkRestaurantOwnership, restaurantHasNoOrders, canToggleState }
