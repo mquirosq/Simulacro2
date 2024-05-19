@@ -1,0 +1,17 @@
+Descuento (int 0 - 100) a cada restaurante
+
+Sustema --> Muetsra y aplica
+
+No todos los productos se promocionan
+Cada producto --> Promocionado o No
+
+solo propietarios de un restaurante
+
+Default --> 0
+
+Producto promocionado --> Porcentaje de descuento 
+
+Edición y creacion --> Nuevo input item
+
+Mostrar botón si descuento > 0 
+
