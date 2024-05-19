@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, FlatList, Pressable, View } from 'react-native'
 
-import { getAll, remove, toggleState as toggleStatus } from '../../api/RestaurantEndpoints'
+import { getAll, remove } from '../../api/RestaurantEndpoints'
 import ImageCard from '../../components/ImageCard'
 import TextSemiBold from '../../components/TextSemibold'
 import TextRegular from '../../components/TextRegular'
@@ -39,9 +39,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
         {item.averageServiceMinutes !== null &&
           <TextSemiBold>Avg. service time: <TextSemiBold textStyle={{ color: GlobalStyles.brandPrimary }}>{item.averageServiceMinutes} min.</TextSemiBold></TextSemiBold>
         }
-        <TextSemiBold>This restaurant is <TextSemiBold style={{ color: GlobalStyles.brandPrimary }}>{item.status}</TextSemiBold></TextSemiBold>
         <TextSemiBold>Shipping: <TextSemiBold textStyle={{ color: GlobalStyles.brandPrimary }}>{item.shippingCosts.toFixed(2)}€</TextSemiBold></TextSemiBold>
-
         <View style={styles.actionButtonsContainer}>
           <Pressable
             onPress={() => navigation.navigate('EditRestaurantScreen', { id: item.id })
@@ -79,26 +77,6 @@ export default function RestaurantsScreen ({ navigation, route }) {
             </TextRegular>
           </View>
         </Pressable>
-
-        { item.status === 'online' || item.status === 'offline'
-          ? <Pressable
-            onPress={() => { toggleRestaurant(item) }}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed
-                  ? GlobalStyles.brandSuccessTap
-                  : GlobalStyles.brandSuccess
-              },
-              styles.actionButton
-            ]}>
-          <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-            <MaterialCommunityIcons name='history' color={'white'} size={20}/>
-            <TextRegular textStyle={styles.text}>
-              {item.status === 'online' ? 'offline' : 'online'}
-            </TextRegular>
-          </View>
-        </Pressable>
-          : null}
         </View>
       </ImageCard>
     )
@@ -175,27 +153,6 @@ export default function RestaurantsScreen ({ navigation, route }) {
     }
   }
 
-  const toggleRestaurant = async (restaurant) => {
-    try {
-      await toggleStatus(restaurant.id)
-      await fetchRestaurants()
-      showMessage({
-        message: `Restaurant ${restaurant.name} succesfully made ${restaurant.status === 'online' ? 'offline' : 'online'}`,
-        type: 'success',
-        style: GlobalStyles.flashStyle,
-        titleStyle: GlobalStyles.flashTextStyle
-      })
-    } catch (error) {
-      console.log(error)
-      showMessage({
-        message: `Restaurant ${restaurant.name} could not be made ${restaurant.status === 'online' ? 'offline' : 'online'}.`,
-        type: 'error',
-        style: GlobalStyles.flashStyle,
-        titleStyle: GlobalStyles.flashTextStyle
-      })
-    }
-  }
-
   return (
     <>
     <FlatList
@@ -238,7 +195,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'center',
     flexDirection: 'column',
-    width: '33%'
+    width: '50%'
   },
   actionButtonsContainer: {
     flexDirection: 'row',
