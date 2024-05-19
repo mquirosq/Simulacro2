@@ -1,0 +1,6 @@
+Dueños --> Crear propias categorias de restaurantes
+
+Creación de restaurantes --> categorias propias (botón)
+Volver --> Disponible en el desplegable
+
+No --> Crear categoria ya existente - max 50 caracteres
